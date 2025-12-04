@@ -1,0 +1,168 @@
+---
+title: Virtual Machines
+description: Flexible, isolated environments with dedicated CPU, memory, and storage
+---
+
+# Virtual Machines
+
+Virtual Machines offer flexible, isolated environments with dedicated CPU, memory, and storage, ideal for a wide range of applications with scalable resource demands.
+
+## Overview
+
+Virtual Machines (VMs) provide the perfect balance between performance, flexibility, and cost-effectiveness. They give you:
+
+- Dedicated resources in an isolated environment
+- Flexibility to scale resources up or down
+- Quick provisioning and deployment
+- Cost-effective computing for most workloads
+
+## Key Features
+
+### Flexible Resources
+- Choose CPU, memory, and storage configurations
+- Adjust resources as your needs change
+- Support for various VM sizes
+
+### Isolated Environments
+- Each VM runs independently
+- Secure separation from other workloads
+- Dedicated resource allocation
+
+### Quick Provisioning
+- Deploy VMs in minutes
+- Pre-configured OS images available
+- Easy snapshot and backup capabilities
+
+### Scalable
+- Start small and grow as needed
+- Add or remove VMs based on demand
+- Vertical and horizontal scaling options
+
+## Use Cases
+
+### Development and Testing
+Perfect for dev/test environments:
+- Isolated development workspaces
+- Testing different configurations
+- CI/CD pipelines
+- Staging environments
+
+### Model Development
+Ideal for ML model development:
+- Exploratory data analysis
+- Model training and tuning
+- Experimentation with different frameworks
+- Prototype development
+
+### Production Workloads
+Run stable production applications:
+- Web applications
+- API servers
+- Database servers
+- Microservices
+
+### Multi-Environment Deployments
+Manage multiple environments:
+- Development, staging, and production
+- Different versions of applications
+- Geographic distribution
+
+## Creating a Virtual Machine
+
+1. **Navigate** to the Virtual Machines section
+2. **Click** "New Virtual Machine" button
+3. **Select** VM configuration:
+   - Operating system
+   - CPU cores
+   - Memory (RAM)
+   - Storage size
+   - Network settings
+4. **Configure** additional options:
+   - SSH keys
+   - Startup scripts
+   - Tags and labels
+5. **Review** and deploy
+
+## VM Configuration Options
+
+### Compute Options
+- **CPU**: 1-32+ cores
+- **Memory**: 2GB-256GB+
+- **GPU**: Optional GPU acceleration
+
+### Storage Options
+- **Boot Disk**: SSD or HDD
+- **Additional Disks**: Attach as needed
+- **Snapshots**: Point-in-time backups
+
+### Networking
+- **Public IP**: Optional external access
+- **Private Network**: VPC integration
+- **Firewall Rules**: Security configuration
+
+## Management Operations
+
+### Instance Control
+- Start, stop, and restart VMs
+- Resize CPU and memory (with restart)
+- Create snapshots for backup
+- Clone VMs for replication
+
+### Monitoring
+- CPU and memory utilization
+- Disk I/O metrics
+- Network traffic
+- Custom monitoring metrics
+
+### Access and Security
+- SSH key management
+- Password authentication (if enabled)
+- Security groups and firewall rules
+- VPN and private network access
+
+## Best Practices
+
+### Right-Sizing
+- Start with smaller instances
+- Monitor actual resource usage
+- Scale up only when needed
+- Use monitoring data to optimize
+
+### Security
+- Use SSH keys instead of passwords
+- Configure minimal firewall rules
+- Keep OS and software updated
+- Enable disk encryption
+
+### Backup and Recovery
+- Regular snapshots of critical VMs
+- Test recovery procedures
+- Document configurations
+- Use automation for backups
+
+### Cost Management
+- Stop VMs when not in use
+- Use appropriate instance sizes
+- Monitor and optimize resource usage
+- Set up alerts for unexpected costs
+
+## Viewing All Virtual Machines
+
+Click "View All" to access your VM dashboard:
+- List of all VMs and their status
+- Resource utilization overview
+- Quick actions (start, stop, restart)
+- Performance metrics
+
+## Differences from Bare Metal
+
+| Feature | Virtual Machines | Bare Metal |
+|---------|-----------------|------------|
+| Deployment Speed | Minutes | Hours |
+| Cost | Lower | Higher |
+| Performance | Good | Maximum |
+| Flexibility | High | Limited |
+| Hardware Access | Virtualized | Direct |
+| Isolation | Software | Physical |
+
+Choose VMs for flexibility and cost-effectiveness, Bare Metal for maximum performance.

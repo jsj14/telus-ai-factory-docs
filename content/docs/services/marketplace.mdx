@@ -1,0 +1,606 @@
+---
+title: Marketplace Applications
+description: Pre-configured ML solutions and ready-to-deploy tools
+---
+
+# Marketplace Applications
+
+Marketplace Applications Profiles are predefined configurations designed to define, provision, and manage enterprise-grade ML solutions. These profiles streamline the deployment of complex applications by providing ready-to-use templates and configurations.
+
+## Overview
+
+The Marketplace offers a curated collection of pre-built applications and solutions designed to accelerate your AI/ML projects. Each application comes with:
+
+- Pre-configured environments
+- Optimized resource allocation
+- Best-practice configurations
+- Documentation and examples
+- Support and updates
+
+## Key Features
+
+### Ready-to-Deploy
+- One-click deployment
+- Pre-configured settings
+- Tested and validated
+- Production-ready
+
+### Enterprise-Grade
+- Security hardened
+- High availability
+- Performance optimized
+- Compliance ready
+
+### Customizable
+- Configurable parameters
+- Extendable frameworks
+- Integration-ready
+- Custom branding options
+
+### Maintained and Supported
+- Regular updates
+- Security patches
+- Documentation
+- Community and enterprise support
+
+## Categories
+
+### Development Environments
+
+#### JupyterHub
+Multi-user Jupyter notebook server:
+- **Features**: User management, resource limits, persistent storage
+- **Use Case**: Team collaboration, educational environments
+- **Users**: Data scientists, researchers, students
+
+#### VS Code Server
+Browser-based development environment:
+- **Features**: Full IDE, extensions, Git integration
+- **Use Case**: Remote development, pair programming
+- **Users**: Software engineers, ML engineers
+
+#### RStudio Server
+R development environment:
+- **Features**: R console, plotting, package management
+- **Use Case**: Statistical analysis, data visualization
+- **Users**: Data analysts, statisticians
+
+### ML Frameworks
+
+#### MLflow
+ML lifecycle management:
+- **Features**: Experiment tracking, model registry, deployment
+- **Use Case**: ML operations, model versioning
+- **Users**: ML engineers, data scientists
+
+#### Kubeflow
+End-to-end ML platform:
+- **Features**: Pipelines, training, serving, monitoring
+- **Use Case**: Production ML workflows
+- **Users**: ML engineers, DevOps
+
+#### Ray
+Distributed computing framework:
+- **Features**: Parallel processing, hyperparameter tuning, serving
+- **Use Case**: Scalable ML training and serving
+- **Users**: ML researchers, engineers
+
+### Data Processing
+
+#### Apache Spark
+Big data processing:
+- **Features**: Distributed computing, SQL, streaming, ML
+- **Use Case**: Large-scale data processing
+- **Users**: Data engineers, data scientists
+
+#### Apache Airflow
+Workflow orchestration:
+- **Features**: DAG scheduling, monitoring, alerting
+- **Use Case**: Data pipelines, ETL workflows
+- **Users**: Data engineers, ML engineers
+
+#### Dask
+Parallel computing in Python:
+- **Features**: Pandas at scale, distributed arrays, ML
+- **Use Case**: Large dataset processing
+- **Users**: Data scientists, analysts
+
+### Vector Databases
+
+#### Weaviate
+Vector search engine:
+- **Features**: Semantic search, embeddings, GraphQL API
+- **Use Case**: Similarity search, RAG applications
+- **Users**: ML engineers, developers
+
+#### Milvus
+Open-source vector database:
+- **Features**: Billion-scale search, GPU acceleration
+- **Use Case**: Recommendation systems, similarity search
+- **Users**: ML engineers, data scientists
+
+#### Qdrant
+Vector database with filtering:
+- **Features**: Hybrid search, payload filtering, clustering
+- **Use Case**: Advanced vector search, recommendations
+- **Users**: ML engineers, developers
+
+### Monitoring and Observability
+
+#### Prometheus + Grafana
+Monitoring stack:
+- **Features**: Metrics collection, visualization, alerting
+- **Use Case**: System monitoring, performance tracking
+- **Users**: DevOps, SRE, ML engineers
+
+#### MLflow + Prometheus
+ML metrics tracking:
+- **Features**: Model metrics, experiment comparison
+- **Use Case**: ML model monitoring
+- **Users**: ML engineers, data scientists
+
+#### Evidently AI
+ML model monitoring:
+- **Features**: Data drift, model quality, performance
+- **Use Case**: Production ML monitoring
+- **Users**: ML engineers, data scientists
+
+### LLM Tools
+
+#### LangChain Server
+LLM application framework:
+- **Features**: Chains, agents, memory, document loading
+- **Use Case**: LLM applications, chatbots, agents
+- **Users**: LLM developers, researchers
+
+#### LlamaIndex
+Data framework for LLMs:
+- **Features**: Document indexing, retrieval, RAG
+- **Use Case**: Knowledge bases, document Q&A
+- **Users**: LLM developers, ML engineers
+
+#### Hugging Face TGI
+Text Generation Inference:
+- **Features**: Optimized LLM serving, streaming, tokens
+- **Use Case**: Production LLM serving
+- **Users**: ML engineers, developers
+
+## Deploying Marketplace Applications
+
+### Standard Deployment
+
+1. **Browse** Marketplace in Developer Hub
+2. **Select** application you need
+3. **Click** "Deploy" button
+4. **Configure** application:
+   - Instance name
+   - Resource allocation
+   - Configuration parameters
+   - Network settings
+5. **Review** settings
+6. **Deploy** application
+
+### Custom Configuration
+
+```yaml
+# Example: MLflow deployment configuration
+application: mlflow
+version: "2.9.2"
+resources:
+  cpu: 4
+  memory: "16Gi"
+  storage: "100Gi"
+configuration:
+  backend_store: "postgresql"
+  artifact_store: "s3"
+  tracking_uri: "https://mlflow.example.com"
+environment:
+  - name: MLFLOW_S3_ENDPOINT_URL
+    value: "https://s3.example.com"
+  - name: POSTGRES_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: mlflow-secrets
+        key: db-password
+```
+
+## Application Details
+
+### JupyterHub
+
+**Description**: Multi-user Jupyter notebook server with authentication and resource management.
+
+**Key Features:**
+- User authentication (OAuth, LDAP, etc.)
+- Per-user resource limits
+- Persistent home directories
+- Admin interface
+- Multiple Python environments
+
+**Configuration Options:**
+```yaml
+jupyterhub:
+  users:
+    - username: user1
+      memory: "4Gi"
+      cpu: 2
+  authentication:
+    type: "oauth"
+    provider: "google"
+  storage:
+    type: "persistent"
+    size: "50Gi"
+```
+
+**Use Cases:**
+- Team collaboration
+- Educational workshops
+- Data science teams
+- Research groups
+
+### MLflow
+
+**Description**: Platform for managing the ML lifecycle including experimentation, reproducibility, and deployment.
+
+**Key Features:**
+- Experiment tracking
+- Model registry
+- Model deployment
+- Project packaging
+- Metrics comparison
+
+**Configuration Options:**
+```yaml
+mlflow:
+  tracking:
+    backend: "postgresql"
+    artifact_location: "s3://mlflow-artifacts"
+  registry:
+    enabled: true
+  deployment:
+    enabled: true
+    default_flavor: "python_function"
+```
+
+**Use Cases:**
+- Experiment tracking
+- Model versioning
+- Model deployment
+- Team collaboration
+- Reproducible ML
+
+### Kubeflow
+
+**Description**: End-to-end ML platform on Kubernetes for deploying, monitoring, and managing ML systems.
+
+**Key Features:**
+- ML pipelines
+- Distributed training
+- Hyperparameter tuning
+- Model serving
+- Metadata tracking
+
+**Configuration Options:**
+```yaml
+kubeflow:
+  pipelines:
+    enabled: true
+  notebooks:
+    enabled: true
+    default_image: "jupyter/tensorflow-notebook"
+  training:
+    distributed: true
+    frameworks:
+      - tensorflow
+      - pytorch
+```
+
+**Use Cases:**
+- End-to-end ML workflows
+- Production ML pipelines
+- Distributed training
+- Model deployment
+- ML automation
+
+### Vector Databases
+
+#### Weaviate Example
+
+```yaml
+weaviate:
+  replicas: 3
+  resources:
+    cpu: 4
+    memory: "16Gi"
+  modules:
+    - text2vec-transformers
+    - qna-transformers
+  persistence:
+    size: "100Gi"
+```
+
+**Usage:**
+```python
+import weaviate
+
+client = weaviate.Client(
+    url="https://weaviate.example.com",
+    auth_client_secret=weaviate.AuthApiKey(api_key="your-key")
+)
+
+# Create schema
+schema = {
+    "class": "Document",
+    "vectorizer": "text2vec-transformers",
+    "properties": [
+        {"name": "content", "dataType": ["text"]},
+        {"name": "title", "dataType": ["string"]}
+    ]
+}
+client.schema.create_class(schema)
+
+# Add data
+client.data_object.create(
+    {"content": "Machine learning is...", "title": "ML Intro"},
+    "Document"
+)
+
+# Search
+result = client.query.get("Document", ["content", "title"]) \
+    .with_near_text({"concepts": ["artificial intelligence"]}) \
+    .with_limit(5) \
+    .do()
+```
+
+## Managing Applications
+
+### Lifecycle Management
+
+**Start/Stop:**
+- Start applications when needed
+- Stop to save resources
+- Schedule automatic start/stop
+
+**Update:**
+- Update to newer versions
+- Apply security patches
+- Rollback if needed
+
+**Scale:**
+- Increase/decrease resources
+- Add/remove replicas
+- Auto-scaling rules
+
+**Delete:**
+- Remove when no longer needed
+- Clean up resources
+- Backup data before deletion
+
+### Monitoring
+
+View application metrics:
+- Resource usage (CPU, memory, disk)
+- Application-specific metrics
+- User activity
+- Error rates
+- Performance trends
+
+### Access Control
+
+Configure who can access:
+- User authentication
+- Role-based access control
+- Team permissions
+- API access control
+
+## Integration Patterns
+
+### With Compute Resources
+
+```yaml
+# Deploy application on specific compute
+application: mlflow
+compute:
+  type: "kubernetes"
+  cluster: "ml-cluster"
+  namespace: "mlflow"
+```
+
+### With Notebooks
+
+```python
+# Access MLflow from notebook
+import mlflow
+
+mlflow.set_tracking_uri("https://mlflow.example.com")
+
+# Log experiment
+with mlflow.start_run():
+    mlflow.log_param("learning_rate", 0.01)
+    mlflow.log_metric("accuracy", 0.95)
+    mlflow.sklearn.log_model(model, "model")
+```
+
+### With Inference Services
+
+```yaml
+# Deploy model from MLflow to inference service
+model_uri: "models:/my-model/production"
+deployment:
+  service: "vllm"
+  resources:
+    gpu: 1
+```
+
+## Best Practices
+
+### Application Selection
+- Choose based on team needs
+- Consider learning curve
+- Evaluate resource requirements
+- Check integration capabilities
+
+### Resource Planning
+- Start with recommended resources
+- Monitor usage patterns
+- Scale based on actual needs
+- Plan for peak usage
+
+### Security
+- Enable authentication
+- Use HTTPS/TLS
+- Implement access controls
+- Regular security updates
+- Audit logging
+
+### Maintenance
+- Regular updates
+- Backup configurations
+- Monitor health
+- Document customizations
+- Test before updating
+
+## Custom Applications
+
+### Submitting Custom Applications
+
+Have a custom solution? Submit to Marketplace:
+
+1. **Prepare** application package:
+   - Docker image
+   - Configuration templates
+   - Documentation
+   - Example usage
+
+2. **Test** thoroughly:
+   - Different configurations
+   - Resource requirements
+   - Integration scenarios
+
+3. **Submit** for review:
+   - Application details
+   - Resource requirements
+   - Pricing (if applicable)
+   - Support plan
+
+4. **Approval** process:
+   - Technical review
+   - Security audit
+   - Documentation review
+
+### Application Template
+
+```yaml
+apiVersion: marketplace.telus.ai/v1
+kind: Application
+metadata:
+  name: my-custom-app
+  category: "ml-tools"
+  version: "1.0.0"
+spec:
+  description: "Custom ML application"
+  icon: "https://example.com/icon.png"
+  resources:
+    cpu: "4"
+    memory: "16Gi"
+    gpu: 0
+  configuration:
+    - name: "database_url"
+      type: "string"
+      required: true
+    - name: "api_port"
+      type: "integer"
+      default: 8080
+  deployment:
+    image: "your-registry/app:1.0.0"
+    ports:
+      - containerPort: 8080
+        protocol: TCP
+```
+
+## Pricing Models
+
+### Free Tier
+- Open-source applications
+- Community support
+- Basic features
+- Resource limits apply
+
+### Standard
+- Enhanced features
+- Email support
+- Higher resource limits
+- Regular updates
+
+### Enterprise
+- Premium features
+- Dedicated support
+- SLA guarantees
+- Custom configurations
+- Priority updates
+
+## Support and Documentation
+
+### Getting Help
+
+**Documentation:**
+- Quick start guides
+- Configuration references
+- API documentation
+- Example projects
+
+**Community:**
+- Forums and discussions
+- GitHub repositories
+- Stack Overflow
+- Community calls
+
+**Enterprise Support:**
+- Email support
+- Chat support
+- Phone support
+- Dedicated account manager
+
+### Troubleshooting
+
+**Common Issues:**
+
+1. **Application won't start**
+   - Check resource availability
+   - Verify configuration
+   - Review logs
+   - Check dependencies
+
+2. **Performance issues**
+   - Monitor resource usage
+   - Check for bottlenecks
+   - Scale resources
+   - Optimize configuration
+
+3. **Integration problems**
+   - Verify network connectivity
+   - Check authentication
+   - Review API endpoints
+   - Test connectivity
+
+## Viewing All Applications
+
+Click "View All" in Marketplace to see:
+- Deployed applications
+- Application status
+- Resource usage
+- Access URLs
+- Configuration details
+- Quick actions (restart, scale, configure, delete)
+
+## Future Marketplace Additions
+
+Coming soon:
+- More LLM tools and frameworks
+- Advanced monitoring solutions
+- Data versioning tools
+- Feature stores
+- AutoML platforms
+- Model optimization tools
+- Collaboration platforms
+- Industry-specific solutions

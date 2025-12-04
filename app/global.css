@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import 'fumadocs-ui/style.css';
+
+:root {
+  --primary: 275 100% 50%; /* TELUS Purple */
+  --primary-foreground: 0 0% 100%;
+  --accent: 275 80% 60%;
+  --accent-foreground: 0 0% 100%;
+}
+
+.dark {
+  --primary: 275 90% 60%;
+  --primary-foreground: 0 0% 100%;
+  --accent: 275 70% 50%;
+}

@@ -1,0 +1,348 @@
+---
+title: Kubernetes
+description: Efficient deployment and management of containerized AI/ML applications
+---
+
+# Kubernetes
+
+Kubernetes enables efficient deployment and management of containerized apps, providing automated scaling, orchestration, and resource management.
+
+## Overview
+
+Kubernetes is a powerful container orchestration platform that automates the deployment, scaling, and management of containerized applications. It's ideal for:
+
+- Microservices architectures
+- Scalable ML inference services
+- Production workloads requiring high availability
+- Complex multi-container applications
+
+## Key Features
+
+### Container Orchestration
+- Automated deployment and scaling
+- Self-healing capabilities
+- Load balancing and service discovery
+- Rolling updates and rollbacks
+
+### Resource Management
+- Efficient resource allocation
+- Resource quotas and limits
+- Auto-scaling based on metrics
+- Multi-tenancy support
+
+### High Availability
+- Automatic failover
+- Replica management
+- Health checks and monitoring
+- Distributed architecture
+
+### Developer-Friendly
+- Declarative configuration
+- GitOps workflows
+- Extensive ecosystem
+- Strong community support
+
+## Use Cases
+
+### ML Model Serving
+Deploy and scale inference services:
+- RESTful API endpoints for models
+- Batch inference processing
+- A/B testing of models
+- Canary deployments
+
+### Microservices Applications
+Build scalable, modular applications:
+- Independent service deployment
+- Service mesh integration
+- API gateways
+- Backend services
+
+### Data Processing Pipelines
+Run distributed data workflows:
+- ETL pipelines
+- Stream processing
+- Scheduled batch jobs
+- Data preprocessing
+
+### CI/CD Workflows
+Automate your deployment pipeline:
+- Build and test automation
+- Continuous deployment
+- Environment management
+- Release orchestration
+
+## Creating a Kubernetes Cluster
+
+1. **Navigate** to the Kubernetes section
+2. **Click** "New Kubernetes" button
+3. **Configure** cluster settings:
+   - Cluster name
+   - Kubernetes version
+   - Node pool configuration
+   - Network settings
+4. **Configure** node pools:
+   - Number of nodes
+   - Node size (CPU/memory)
+   - Auto-scaling settings
+   - GPU support (if needed)
+5. **Review** and create cluster
+
+## Cluster Configuration
+
+### Node Pools
+Define groups of nodes with similar characteristics:
+- **General Purpose**: Balanced CPU and memory
+- **Compute Optimized**: High CPU for processing
+- **Memory Optimized**: Large memory for caching
+- **GPU Enabled**: For ML inference and training
+
+### Networking
+- **VPC Integration**: Private networking
+- **Load Balancers**: External access
+- **Ingress Controllers**: HTTP routing
+- **Network Policies**: Security rules
+
+### Storage
+- **Persistent Volumes**: Stateful applications
+- **Storage Classes**: Different performance tiers
+- **Volume Snapshots**: Backup and recovery
+- **Dynamic Provisioning**: Automatic volume creation
+
+## Working with Kubernetes
+
+### Access Methods
+
+#### kubectl CLI
+```bash
+# Get cluster credentials
+kubectl config use-context telus-ai-factory
+
+# Deploy an application
+kubectl apply -f deployment.yaml
+
+# Check pod status
+kubectl get pods
+
+# View logs
+kubectl logs <pod-name>
+```
+
+#### Kubernetes Dashboard
+- Web-based UI for cluster management
+- Visual resource monitoring
+- Easy deployment management
+- Log viewing and debugging
+
+### Deploying Applications
+
+#### Using Deployments
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ml-model-api
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: ml-model
+  template:
+    metadata:
+      labels:
+        app: ml-model
+    spec:
+      containers:
+      - name: model-server
+        image: your-registry/ml-model:latest
+        ports:
+        - containerPort: 8080
+        resources:
+          requests:
+            memory: "2Gi"
+            cpu: "1"
+          limits:
+            memory: "4Gi"
+            cpu: "2"
+```
+
+#### Using Services
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: ml-model-service
+spec:
+  selector:
+    app: ml-model
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8080
+  type: LoadBalancer
+```
+
+## Scaling Applications
+
+### Manual Scaling
+```bash
+# Scale deployment to 5 replicas
+kubectl scale deployment ml-model-api --replicas=5
+```
+
+### Horizontal Pod Autoscaler
+```yaml
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: ml-model-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: ml-model-api
+  minReplicas: 2
+  maxReplicas: 10
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+```
+
+### Cluster Autoscaling
+- Automatically add/remove nodes based on demand
+- Configure min/max node counts
+- Set scaling policies
+- Cost optimization
+
+## Monitoring and Observability
+
+### Built-in Monitoring
+- Resource utilization metrics
+- Pod and node health status
+- Event logs
+- Performance dashboards
+
+### Custom Metrics
+- Application-specific metrics
+- Model performance tracking
+- Business metrics
+- Custom dashboards
+
+### Logging
+- Centralized log aggregation
+- Pod and container logs
+- System logs
+- Log search and filtering
+
+## Best Practices
+
+### Resource Management
+- Set resource requests and limits
+- Use namespaces for isolation
+- Implement resource quotas
+- Monitor resource usage
+
+### High Availability
+- Run multiple replicas
+- Use pod anti-affinity
+- Implement health checks
+- Plan for failure scenarios
+
+### Security
+- Use RBAC for access control
+- Implement network policies
+- Scan container images
+- Encrypt sensitive data with secrets
+
+### CI/CD Integration
+- Automate deployments with GitOps
+- Use Helm charts for packaging
+- Implement blue-green deployments
+- Test in staging before production
+
+### Cost Optimization
+- Right-size pods and nodes
+- Use auto-scaling effectively
+- Clean up unused resources
+- Use spot instances when appropriate
+
+## Managing Your Clusters
+
+### Cluster Operations
+- **Upgrade**: Update Kubernetes version
+- **Scale**: Add or remove nodes
+- **Backup**: Backup cluster configuration
+- **Monitor**: View cluster health and metrics
+
+### Node Management
+- Add/remove node pools
+- Update node configurations
+- Drain nodes for maintenance
+- Replace unhealthy nodes
+
+### Troubleshooting
+- Check pod events
+- View container logs
+- Inspect resource status
+- Debug networking issues
+
+## Viewing All Clusters
+
+Click "View All" to access your Kubernetes dashboard:
+- List of all clusters and their status
+- Node count and health
+- Resource utilization
+- Quick access to cluster credentials
+
+## Integration with Other Services
+
+### Notebooks
+- Deploy JupyterHub on Kubernetes
+- Run distributed training jobs
+- Access cluster resources from notebooks
+
+### Inference Services
+- Deploy vLLM on Kubernetes
+- Scale Ollama instances
+- Run NIM services in containers
+
+### Storage
+- Persistent volumes for data
+- Shared storage across pods
+- Backup and recovery solutions
+
+## Migration from VMs to Kubernetes
+
+Considering moving from VMs to Kubernetes?
+
+### Benefits
+- Better resource utilization
+- Automated scaling
+- Faster deployments
+- Improved resilience
+
+### Migration Steps
+1. Containerize your applications
+2. Create Kubernetes manifests
+3. Set up CI/CD pipelines
+4. Deploy to staging cluster
+5. Test thoroughly
+6. Migrate production traffic
+
+### When to Use Kubernetes vs VMs
+
+**Use Kubernetes when:**
+- Running containerized applications
+- Need auto-scaling capabilities
+- Deploying microservices
+- Require high availability
+
+**Use VMs when:**
+- Running monolithic applications
+- Need specific OS configurations
+- Simpler operational requirements
+- Legacy application constraints

@@ -1,0 +1,4 @@
+{
+  "title": "Compute",
+  "pages": ["index", "bare-metal", "virtual-machines", "kubernetes"]
+}

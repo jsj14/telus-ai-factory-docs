@@ -1,0 +1,497 @@
+---
+title: Notebooks
+description: Interactive development environments for data analysis and machine learning
+---
+
+# Notebooks
+
+Notebook Profiles are predefined configurations that deliver an interactive environment for tasks such as data analysis, visualization, and machine learning development. By preconfiguring the required resources, tools, and dependencies, these profiles simplify the creation and management of notebook instances.
+
+## Overview
+
+Notebooks provide a powerful, browser-based interactive computing environment that combines:
+
+- Live code execution
+- Rich text and markdown
+- Data visualizations
+- Integrated documentation
+- Version control
+
+They're the perfect tool for ML engineers to explore data, develop models, and document their work all in one place.
+
+## Key Features
+
+### Interactive Development
+- Write and execute code in cells
+- See results immediately
+- Iterate quickly on ideas
+- Mix code with documentation
+
+### Pre-configured Environments
+- Popular ML frameworks pre-installed
+- GPU support available
+- Optimized Python environments
+- Common libraries included
+
+### Collaboration
+- Share notebooks with team members
+- Version control integration
+- Reproducible results
+- Documentation built-in
+
+### Flexible Resources
+- Choose CPU or GPU instances
+- Scale resources as needed
+- Persistent storage
+- Custom environment configuration
+
+## Pre-installed Tools and Libraries
+
+### Machine Learning Frameworks
+- **TensorFlow** - Deep learning framework
+- **PyTorch** - Neural network library
+- **scikit-learn** - Classical ML algorithms
+- **XGBoost** - Gradient boosting
+- **Keras** - High-level neural networks API
+
+### Data Processing
+- **Pandas** - Data manipulation
+- **NumPy** - Numerical computing
+- **Dask** - Parallel computing
+- **Apache Spark** - Big data processing
+
+### Visualization
+- **Matplotlib** - Plotting library
+- **Seaborn** - Statistical visualization
+- **Plotly** - Interactive charts
+- **Bokeh** - Interactive visualizations
+
+### Development Tools
+- **Jupyter Lab** - Advanced notebook interface
+- **Git** - Version control
+- **SSH** - Remote access
+- **Terminal** - Command-line access
+
+## Use Cases
+
+### Exploratory Data Analysis
+Perfect for understanding your data:
+- Load and inspect datasets
+- Generate summary statistics
+- Create visualizations
+- Identify patterns and anomalies
+
+### Model Development
+Build and train ML models:
+- Preprocess data
+- Feature engineering
+- Model training and evaluation
+- Hyperparameter tuning
+- Cross-validation
+
+### Prototyping
+Quickly test ideas:
+- Experiment with algorithms
+- Try different approaches
+- Validate concepts
+- Rapid iteration
+
+### Education and Documentation
+Create educational content:
+- Tutorial notebooks
+- Code examples
+- Documentation with live code
+- Training materials
+
+### Research and Collaboration
+Collaborate on research:
+- Share findings with team
+- Reproducible experiments
+- Document methodology
+- Peer review
+
+## Creating a Notebook Instance
+
+1. **Navigate** to the Notebooks section in Developer Hub
+2. **Click** "New Notebook" button
+3. **Select** a notebook profile:
+   - **Basic**: CPU-based, general purpose
+   - **GPU Accelerated**: With NVIDIA GPUs
+   - **High Memory**: For large datasets
+   - **Custom**: Configure your own
+4. **Configure** resources:
+   - CPU cores
+   - Memory (RAM)
+   - GPU type and count
+   - Storage size
+5. **Choose** software environment:
+   - Python version
+   - Additional libraries
+   - Kernel options
+6. **Review** and create
+
+## Notebook Profiles
+
+### Basic Profile
+- **CPU**: 4 cores
+- **Memory**: 16GB RAM
+- **Storage**: 100GB
+- **Best for**: General development, small datasets
+
+### GPU Accelerated
+- **CPU**: 8 cores
+- **Memory**: 32GB RAM
+- **GPU**: NVIDIA A100 or similar
+- **Storage**: 200GB
+- **Best for**: Deep learning, model training
+
+### High Memory
+- **CPU**: 16 cores
+- **Memory**: 128GB RAM
+- **Storage**: 500GB
+- **Best for**: Large dataset processing
+
+### Custom Profile
+Configure exactly what you need:
+- Choose CPU, memory, GPU
+- Select storage size
+- Pick software environment
+- Add custom dependencies
+
+## Working with Notebooks
+
+### Accessing Your Notebook
+
+Once created, access via:
+- **Web Browser**: Click "Open Notebook"
+- **SSH**: Connect via terminal
+- **VS Code**: Use remote development
+- **API**: Programmatic access
+
+### Jupyter Lab Interface
+
+The default interface includes:
+- **File Browser**: Navigate files and folders
+- **Notebook Editor**: Write and run code
+- **Terminal**: Command-line access
+- **Text Editor**: Edit configuration files
+- **Extensions**: Additional functionality
+
+### Managing Notebooks
+
+#### Saving Work
+- Auto-save every few minutes
+- Manual save with Ctrl+S
+- Create checkpoints
+- Version control with Git
+
+#### Installing Packages
+```python
+# Using pip
+!pip install package-name
+
+# Using conda
+!conda install package-name
+
+# From requirements file
+!pip install -r requirements.txt
+```
+
+#### Accessing Data
+```python
+# From local storage
+import pandas as pd
+df = pd.read_csv('/data/dataset.csv')
+
+# From cloud storage
+df = pd.read_csv('s3://bucket/dataset.csv')
+
+# From API
+import requests
+data = requests.get('https://api.example.com/data').json()
+```
+
+## GPU Usage
+
+### Checking GPU Availability
+```python
+# TensorFlow
+import tensorflow as tf
+print("GPUs Available:", tf.config.list_physical_devices('GPU'))
+
+# PyTorch
+import torch
+print("CUDA Available:", torch.cuda.is_available())
+print("GPU Count:", torch.cuda.device_count())
+```
+
+### Monitoring GPU Usage
+```bash
+# In terminal cell
+!nvidia-smi
+
+# Watch GPU usage
+!watch -n 1 nvidia-smi
+```
+
+### Optimizing GPU Usage
+- Use batch processing
+- Free GPU memory when done
+- Monitor memory usage
+- Use mixed precision training
+
+## Collaboration Features
+
+### Sharing Notebooks
+- Export as `.ipynb` file
+- Share via Git repository
+- Generate HTML reports
+- Create slideshows
+
+### Version Control
+```bash
+# Initialize Git
+!git init
+!git add notebook.ipynb
+!git commit -m "Initial commit"
+
+# Push to remote
+!git remote add origin <url>
+!git push -u origin main
+```
+
+### Real-time Collaboration
+- Multiple users can view
+- Comments and discussions
+- Shared environments
+- Team workspaces
+
+## Best Practices
+
+### Code Organization
+- Use descriptive cell headers
+- Break code into logical cells
+- Add markdown documentation
+- Keep notebooks focused
+
+### Performance
+- Close unused notebooks
+- Clear output before saving
+- Optimize memory usage
+- Use appropriate instance size
+
+### Reproducibility
+- Document dependencies
+- Set random seeds
+- Include environment details
+- Save package versions
+
+```python
+# Save environment
+!pip freeze > requirements.txt
+
+# Set seeds for reproducibility
+import numpy as np
+import random
+import tensorflow as tf
+
+np.random.seed(42)
+random.seed(42)
+tf.random.set_seed(42)
+```
+
+### Security
+- Don't commit secrets
+- Use environment variables
+- Secure API endpoints
+- Review shared content
+
+## Monitoring and Management
+
+### Resource Monitoring
+View real-time metrics:
+- CPU usage
+- Memory consumption
+- GPU utilization
+- Disk space
+
+### Cost Management
+- Stop notebooks when not in use
+- Use appropriate instance sizes
+- Monitor usage patterns
+- Set up auto-shutdown
+
+### Troubleshooting
+
+#### Out of Memory
+- Reduce batch size
+- Clear unused variables
+- Use data generators
+- Upgrade instance
+
+#### Kernel Crashed
+- Restart kernel
+- Check memory usage
+- Review error logs
+- Update packages
+
+#### Slow Performance
+- Check resource utilization
+- Optimize code
+- Use profiling tools
+- Consider GPU instance
+
+## Integration with Other Services
+
+### Data Sources
+- Cloud storage integration
+- Database connections
+- API access
+- Local file upload
+
+### Model Deployment
+Export models to:
+- vLLM for serving
+- Ollama for local testing
+- NIM for production
+- Kubernetes for scaling
+
+### Workflow Integration
+- CI/CD pipelines
+- Scheduled execution
+- Automated reporting
+- MLOps platforms
+
+## Advanced Features
+
+### Custom Kernels
+Install additional kernels:
+- R kernel for statistics
+- Julia for numerical computing
+- Scala for Spark
+- Custom environments
+
+### Extensions
+Enhance functionality with:
+- Debugger
+- Table of contents
+- Code formatter
+- Git integration
+- Variable inspector
+
+### Magic Commands
+Useful Jupyter magics:
+```python
+# Time execution
+%time function()
+%timeit function()
+
+# Run shell commands
+!ls -la
+
+# Load external code
+%load script.py
+
+# Run external script
+%run script.py
+
+# Display environment variables
+%env
+```
+
+## Viewing All Notebooks
+
+Click "View All" to see:
+- All notebook instances
+- Status (running, stopped)
+- Resource usage
+- Last accessed time
+- Quick actions
+
+## Migrating from Local Development
+
+### Benefits of Cloud Notebooks
+- No local setup required
+- Consistent environments
+- Access from anywhere
+- Scalable resources
+- Collaboration features
+
+### Migration Steps
+1. Export local notebooks
+2. Upload to notebook instance
+3. Install additional packages
+4. Update data paths
+5. Test execution
+
+## Example Workflows
+
+### Data Science Pipeline
+```python
+# 1. Load data
+import pandas as pd
+df = pd.read_csv('data.csv')
+
+# 2. Explore
+df.describe()
+df.info()
+
+# 3. Visualize
+import matplotlib.pyplot as plt
+df.plot()
+plt.show()
+
+# 4. Preprocess
+from sklearn.preprocessing import StandardScaler
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(df)
+
+# 5. Train model
+from sklearn.ensemble import RandomForestClassifier
+model = RandomForestClassifier()
+model.fit(X_train, y_train)
+
+# 6. Evaluate
+from sklearn.metrics import accuracy_score
+predictions = model.predict(X_test)
+print(f"Accuracy: {accuracy_score(y_test, predictions)}")
+```
+
+### Deep Learning Workflow
+```python
+# 1. Import libraries
+import tensorflow as tf
+from tensorflow import keras
+
+# 2. Load and prepare data
+(x_train, y_train), (x_test, y_test) = keras.datasets.mnist.load_data()
+x_train = x_train.astype('float32') / 255
+x_test = x_test.astype('float32') / 255
+
+# 3. Build model
+model = keras.Sequential([
+    keras.layers.Flatten(input_shape=(28, 28)),
+    keras.layers.Dense(128, activation='relu'),
+    keras.layers.Dropout(0.2),
+    keras.layers.Dense(10, activation='softmax')
+])
+
+# 4. Compile
+model.compile(
+    optimizer='adam',
+    loss='sparse_categorical_crossentropy',
+    metrics=['accuracy']
+)
+
+# 5. Train
+history = model.fit(
+    x_train, y_train,
+    epochs=5,
+    validation_split=0.2,
+    verbose=1
+)
+
+# 6. Evaluate
+test_loss, test_acc = model.evaluate(x_test, y_test)
+print(f'Test accuracy: {test_acc}')
+```

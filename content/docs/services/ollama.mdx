@@ -1,0 +1,657 @@
+---
+title: Ollama Inference Services
+description: Local LLM deployment and management made simple
+---
+
+# Ollama Inference Services
+
+Inference Endpoint Profiles for Ollama provide predefined configurations designed to simplify and accelerate the deployment of machine learning models as APIs. Ollama makes it easy to run large language models locally with a focus on simplicity and ease of use.
+
+## Overview
+
+Ollama is designed to make running LLMs locally straightforward and accessible. It provides:
+
+- Simple model management
+- Easy-to-use API
+- Multiple model support
+- Resource-efficient operation
+- Docker-friendly deployment
+
+## Key Features
+
+### Simplicity First
+- One-command model download
+- Intuitive API
+- Minimal configuration
+- Easy switching between models
+
+### Model Library
+Access popular models:
+- **LLaMA 2**: Meta's open-source models
+- **Mistral**: High-performance 7B model
+- **CodeLlama**: Code generation specialist
+- **Vicuna**: Fine-tuned conversational model
+- **Orca**: Reasoning-focused model
+- **And many more**
+
+### Efficient Resource Usage
+- Optimized model loading
+- Memory-efficient operations
+- GPU and CPU support
+- Quantized models available
+
+### Developer-Friendly
+- REST API
+- Simple CLI
+- Library integrations
+- Docker support
+
+## Use Cases
+
+### Local Development
+Perfect for development workflows:
+- Test prompts locally
+- Prototype applications
+- Offline development
+- Cost-effective experimentation
+
+### Edge Deployment
+Run models close to data:
+- On-premise deployment
+- Low-latency requirements
+- Data privacy needs
+- Offline operation
+
+### Personal Applications
+Build personal tools:
+- Local assistants
+- Private chatbots
+- Custom automation
+- Learning and research
+
+### Testing and Validation
+Before production deployment:
+- Model evaluation
+- Performance testing
+- Integration testing
+- Prompt optimization
+
+## Creating an Ollama Inference Endpoint
+
+1. **Navigate** to Ollama Inference Services
+2. **Click** "New Inference Endpoint" button
+3. **Select** model:
+   - Choose from model library
+   - Or specify custom model
+4. **Configure** resources:
+   - CPU or GPU
+   - Memory allocation
+   - Storage size
+5. **Set** parameters:
+   - Model size (quantization)
+   - Context length
+   - Concurrency settings
+6. **Review** and deploy
+
+## Available Models
+
+### Popular Models
+
+| Model | Size | Description | Best For |
+|-------|------|-------------|----------|
+| **llama2** | 7B-70B | Meta's LLaMA 2 | General purpose |
+| **mistral** | 7B | Mistral AI's model | High performance |
+| **codellama** | 7B-34B | Code generation | Programming tasks |
+| **vicuna** | 7B-13B | Conversational | Chatbots |
+| **orca-mini** | 3B-13B | Reasoning | Question answering |
+| **phi** | 2.7B | Microsoft's Phi | Lightweight tasks |
+
+### Model Variants
+
+Models come in different sizes:
+- **Full precision**: Highest quality
+- **q4**: 4-bit quantization (balanced)
+- **q8**: 8-bit quantization (good quality)
+- **q5**: 5-bit quantization (smaller size)
+
+## Using Ollama API
+
+### Basic Completion
+
+```bash
+# Using curl
+curl http://your-ollama-endpoint.telus.ai/api/generate -d '{
+  "model": "llama2",
+  "prompt": "Why is the sky blue?",
+  "stream": false
+}'
+```
+
+### Python Client
+
+```python
+import requests
+import json
+
+def generate(prompt, model="llama2"):
+    response = requests.post(
+        'http://your-ollama-endpoint.telus.ai/api/generate',
+        json={
+            "model": model,
+            "prompt": prompt,
+            "stream": False
+        }
+    )
+    return response.json()['response']
+
+# Usage
+result = generate("Explain machine learning")
+print(result)
+```
+
+### Chat Interface
+
+```python
+import requests
+
+def chat(messages, model="llama2"):
+    response = requests.post(
+        'http://your-ollama-endpoint.telus.ai/api/chat',
+        json={
+            "model": model,
+            "messages": messages,
+            "stream": False
+        }
+    )
+    return response.json()['message']['content']
+
+# Usage
+messages = [
+    {"role": "system", "content": "You are a helpful assistant."},
+    {"role": "user", "content": "What is Python?"}
+]
+result = chat(messages)
+print(result)
+```
+
+### Streaming Responses
+
+```python
+import requests
+import json
+
+def stream_generate(prompt, model="llama2"):
+    response = requests.post(
+        'http://your-ollama-endpoint.telus.ai/api/generate',
+        json={
+            "model": model,
+            "prompt": prompt,
+            "stream": True
+        },
+        stream=True
+    )
+
+    for line in response.iter_lines():
+        if line:
+            chunk = json.loads(line)
+            if 'response' in chunk:
+                print(chunk['response'], end='', flush=True)
+            if chunk.get('done'):
+                break
+
+# Usage
+stream_generate("Write a story about a robot")
+```
+
+## API Endpoints
+
+### Generate
+Complete a prompt:
+```bash
+POST /api/generate
+{
+  "model": "llama2",
+  "prompt": "your prompt",
+  "stream": false,
+  "options": {
+    "temperature": 0.7,
+    "top_p": 0.9
+  }
+}
+```
+
+### Chat
+Conversational interface:
+```bash
+POST /api/chat
+{
+  "model": "llama2",
+  "messages": [
+    {"role": "user", "content": "Hello!"}
+  ]
+}
+```
+
+### List Models
+Get available models:
+```bash
+GET /api/tags
+```
+
+### Model Information
+Get model details:
+```bash
+POST /api/show
+{
+  "name": "llama2"
+}
+```
+
+## Configuration Parameters
+
+### Generation Parameters
+
+```python
+options = {
+    "temperature": 0.8,      # Randomness (0.0-2.0)
+    "top_k": 40,             # Top-k sampling
+    "top_p": 0.9,            # Nucleus sampling
+    "repeat_penalty": 1.1,   # Penalize repetition
+    "num_predict": 128,      # Max tokens to generate
+    "stop": ["\n\n"],        # Stop sequences
+}
+
+response = requests.post(
+    'http://your-endpoint/api/generate',
+    json={
+        "model": "llama2",
+        "prompt": "your prompt",
+        "options": options
+    }
+)
+```
+
+### Model Parameters
+
+```python
+# When pulling/creating models
+model_config = {
+    "num_ctx": 2048,         # Context window size
+    "num_gpu": 1,            # Number of GPUs
+    "num_thread": 8,         # CPU threads
+    "repeat_last_n": 64,     # Repetition check window
+}
+```
+
+## Model Management
+
+### Downloading Models
+
+Models are automatically downloaded when first used, or you can pre-download:
+
+```bash
+# Download a model
+curl http://your-endpoint/api/pull -d '{
+  "name": "llama2"
+}'
+```
+
+### Listing Models
+
+```python
+import requests
+
+def list_models():
+    response = requests.get('http://your-endpoint/api/tags')
+    return response.json()['models']
+
+models = list_models()
+for model in models:
+    print(f"{model['name']}: {model['size']}")
+```
+
+### Deleting Models
+
+```bash
+# Remove a model
+curl -X DELETE http://your-endpoint/api/delete -d '{
+  "name": "llama2"
+}'
+```
+
+## Integration Examples
+
+### Python Application
+
+```python
+class OllamaClient:
+    def __init__(self, base_url):
+        self.base_url = base_url
+
+    def generate(self, prompt, model="llama2", **options):
+        response = requests.post(
+            f"{self.base_url}/api/generate",
+            json={
+                "model": model,
+                "prompt": prompt,
+                "stream": False,
+                "options": options
+            }
+        )
+        return response.json()['response']
+
+    def chat(self, messages, model="llama2"):
+        response = requests.post(
+            f"{self.base_url}/api/chat",
+            json={
+                "model": model,
+                "messages": messages,
+                "stream": False
+            }
+        )
+        return response.json()['message']['content']
+
+# Usage
+client = OllamaClient('http://your-endpoint.telus.ai')
+
+# Simple generation
+answer = client.generate("What is AI?", temperature=0.7)
+print(answer)
+
+# Chat conversation
+messages = [
+    {"role": "user", "content": "Hello!"},
+    {"role": "assistant", "content": "Hi! How can I help?"},
+    {"role": "user", "content": "Tell me a joke"}
+]
+response = client.chat(messages)
+print(response)
+```
+
+### LangChain Integration
+
+```python
+from langchain.llms import Ollama
+from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
+
+# Initialize
+llm = Ollama(
+    base_url="http://your-endpoint.telus.ai",
+    model="llama2",
+    temperature=0.7,
+    callbacks=[StreamingStdOutCallbackHandler()]
+)
+
+# Generate
+response = llm("Explain quantum computing")
+print(response)
+
+# Use in chains
+from langchain.prompts import PromptTemplate
+from langchain.chains import LLMChain
+
+prompt = PromptTemplate(
+    input_variables=["topic"],
+    template="Write a short poem about {topic}"
+)
+
+chain = LLMChain(llm=llm, prompt=prompt)
+result = chain.run("artificial intelligence")
+print(result)
+```
+
+### JavaScript/Node.js
+
+```javascript
+const axios = require('axios');
+
+class OllamaClient {
+    constructor(baseUrl) {
+        this.baseUrl = baseUrl;
+    }
+
+    async generate(prompt, model = 'llama2', options = {}) {
+        const response = await axios.post(
+            `${this.baseUrl}/api/generate`,
+            {
+                model,
+                prompt,
+                stream: false,
+                options
+            }
+        );
+        return response.data.response;
+    }
+
+    async chat(messages, model = 'llama2') {
+        const response = await axios.post(
+            `${this.baseUrl}/api/chat`,
+            {
+                model,
+                messages,
+                stream: false
+            }
+        );
+        return response.data.message.content;
+    }
+}
+
+// Usage
+const client = new OllamaClient('http://your-endpoint.telus.ai');
+
+client.generate('What is machine learning?')
+    .then(response => console.log(response));
+```
+
+## Performance Optimization
+
+### Model Selection
+- Use smaller models for faster responses
+- Use quantized models to save memory
+- Match model size to task complexity
+
+### Resource Allocation
+```yaml
+# Optimize for your workload
+cpu_threads: 8           # CPU threads
+gpu_layers: 35           # Layers on GPU
+context_window: 2048     # Context size
+batch_size: 512          # Batch size
+```
+
+### Caching
+- Keep frequently used models loaded
+- Use model embeddings cache
+- Implement response caching for common queries
+
+### Concurrency
+```python
+# Handle multiple requests
+import concurrent.futures
+
+def process_prompts(prompts):
+    with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
+        futures = [
+            executor.submit(generate, prompt)
+            for prompt in prompts
+        ]
+        return [f.result() for f in futures]
+```
+
+## Monitoring
+
+### Health Check
+```bash
+# Check if service is running
+curl http://your-endpoint/api/tags
+```
+
+### Model Info
+```python
+def get_model_info(model_name):
+    response = requests.post(
+        'http://your-endpoint/api/show',
+        json={"name": model_name}
+    )
+    return response.json()
+
+info = get_model_info("llama2")
+print(f"Model: {info['modelfile']}")
+print(f"Parameters: {info['parameters']}")
+```
+
+### Performance Metrics
+Monitor:
+- Response times
+- Memory usage
+- CPU/GPU utilization
+- Request throughput
+
+## Best Practices
+
+### Model Management
+- Download models before production use
+- Keep commonly used models loaded
+- Version your models
+- Document model configurations
+
+### Request Handling
+- Implement timeouts
+- Handle errors gracefully
+- Validate input length
+- Use streaming for long responses
+
+### Security
+- Sanitize inputs
+- Implement rate limiting
+- Use authentication
+- Monitor for abuse
+
+### Cost Optimization
+- Use appropriate model sizes
+- Implement caching
+- Batch similar requests
+- Scale based on demand
+
+## Troubleshooting
+
+### Model Loading Issues
+**Problem**: Model fails to load
+
+**Solutions:**
+- Check available disk space
+- Verify model name
+- Ensure sufficient memory
+- Check logs for errors
+
+### Slow Response Times
+**Problem**: Responses are slow
+
+**Solutions:**
+- Use smaller or quantized models
+- Increase CPU threads
+- Enable GPU if available
+- Reduce context window
+
+### Out of Memory
+**Problem**: System runs out of memory
+
+**Solutions:**
+- Use quantized models (q4, q5)
+- Reduce context window
+- Decrease batch size
+- Add more RAM or use GPU
+
+## Comparing with vLLM
+
+| Feature | Ollama | vLLM |
+|---------|--------|------|
+| **Ease of Use** | Very Easy | Moderate |
+| **Performance** | Good | Excellent |
+| **Setup** | Simple | More Complex |
+| **Best For** | Development, Testing | Production, Scale |
+| **Resource Usage** | Efficient | Optimized |
+| **API Compatibility** | Ollama API | OpenAI API |
+
+**Use Ollama for:**
+- Local development
+- Testing and prototyping
+- Simpler deployments
+- Lower traffic workloads
+
+**Use vLLM for:**
+- High-traffic production
+- Maximum performance
+- Large-scale serving
+- OpenAI API compatibility
+
+## Viewing All Endpoints
+
+Click "View All" to see:
+- List of all Ollama endpoints
+- Running models
+- Resource usage
+- Endpoint URLs
+- Status and health
+- Quick actions
+
+## Advanced Usage
+
+### Custom Models
+Create custom model configurations:
+
+```bash
+# Create modelfile
+cat > Modelfile <<EOF
+FROM llama2
+PARAMETER temperature 0.8
+PARAMETER top_p 0.9
+SYSTEM You are a helpful coding assistant.
+EOF
+
+# Create custom model
+curl http://your-endpoint/api/create -d '{
+  "name": "code-assistant",
+  "modelfile": "FROM llama2\nPARAMETER temperature 0.8"
+}'
+```
+
+### Model Embeddings
+Generate embeddings for semantic search:
+
+```python
+def get_embeddings(text, model="llama2"):
+    response = requests.post(
+        'http://your-endpoint/api/embeddings',
+        json={
+            "model": model,
+            "prompt": text
+        }
+    )
+    return response.json()['embedding']
+
+# Usage
+embedding = get_embeddings("machine learning")
+print(f"Embedding dimension: {len(embedding)}")
+```
+
+### Multi-Modal Models
+Some models support images:
+
+```python
+import base64
+
+def analyze_image(image_path, prompt, model="llava"):
+    with open(image_path, "rb") as f:
+        image_data = base64.b64encode(f.read()).decode()
+
+    response = requests.post(
+        'http://your-endpoint/api/generate',
+        json={
+            "model": model,
+            "prompt": prompt,
+            "images": [image_data]
+        }
+    )
+    return response.json()['response']
+```

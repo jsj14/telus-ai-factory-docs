@@ -1,0 +1,714 @@
+---
+title: NIM Services
+description: NVIDIA Inference Microservices for optimized AI inference
+---
+
+# NIM Services
+
+NIM Services Profiles are predefined configurations designed to simplify and accelerate the deployment of machine learning models as APIs using NVIDIA Inference Microservices. These profiles provide a structured and standardized approach to serving trained models with NVIDIA's optimized inference stack.
+
+## Overview
+
+NVIDIA Inference Microservices (NIM) is NVIDIA's solution for deploying AI models in production with maximum performance. It provides:
+
+- Optimized inference for NVIDIA GPUs
+- Pre-built containers for popular models
+- Enterprise-grade reliability
+- OpenAI-compatible APIs
+- Multi-framework support
+
+## Key Features
+
+### NVIDIA Optimizations
+- **TensorRT**: Maximum GPU performance
+- **Triton Inference Server**: Multi-framework serving
+- **CUDA Acceleration**: Native GPU optimization
+- **Multi-GPU Support**: Scale across GPUs
+
+### Pre-Built Containers
+Ready-to-deploy models:
+- Large Language Models (LLMs)
+- Vision models
+- Speech models
+- Multimodal models
+- Custom models
+
+### Enterprise Features
+- High availability
+- Load balancing
+- Health monitoring
+- Performance metrics
+- Security features
+
+### Easy Integration
+- RESTful APIs
+- gRPC support
+- OpenAI-compatible endpoints
+- Python, JavaScript, and other client libraries
+
+## Use Cases
+
+### Production AI Services
+Deploy models at scale:
+- High-throughput inference
+- Low-latency serving
+- Mission-critical applications
+- 24/7 availability
+
+### LLM Applications
+Serve large language models:
+- Chatbots and assistants
+- Content generation
+- Code completion
+- Text analysis
+
+### Computer Vision
+Deploy vision models:
+- Object detection
+- Image classification
+- Segmentation
+- Face recognition
+
+### Multi-Modal AI
+Combine different AI capabilities:
+- Image + text understanding
+- Speech + vision
+- Video analysis
+- Document understanding
+
+## Creating a NIM Inference Endpoint
+
+1. **Navigate** to NIM Services
+2. **Click** "New Inference Endpoint" button
+3. **Select** model type:
+   - LLM (Language Models)
+   - Vision (Image Models)
+   - Speech (Audio Models)
+   - Custom (Your models)
+4. **Choose** specific model:
+   - From NVIDIA model catalog
+   - Or upload custom model
+5. **Configure** resources:
+   - GPU type (A100, H100, etc.)
+   - Number of GPUs
+   - Memory allocation
+6. **Set** performance options:
+   - Batch size
+   - Concurrency
+   - Precision (FP16, INT8, etc.)
+7. **Review** and deploy
+
+## Available Models
+
+### Language Models
+
+| Model | Size | Description |
+|-------|------|-------------|
+| **Llama 2** | 7B-70B | Meta's open-source LLM |
+| **Mistral** | 7B | High-performance language model |
+| **GPT-J** | 6B | EleutherAI's GPT model |
+| **Falcon** | 7B-180B | TII's language models |
+| **CodeLlama** | 7B-34B | Code generation specialist |
+
+### Vision Models
+
+| Model | Type | Use Case |
+|-------|------|----------|
+| **ResNet** | Classification | Image classification |
+| **YOLO** | Detection | Object detection |
+| **SAM** | Segmentation | Segment Anything |
+| **CLIP** | Multi-modal | Image-text understanding |
+
+### Speech Models
+
+| Model | Type | Use Case |
+|-------|------|----------|
+| **Whisper** | STT | Speech-to-text |
+| **FastPitch** | TTS | Text-to-speech |
+| **Riva** | ASR | Automatic speech recognition |
+
+## Using NIM API
+
+### OpenAI-Compatible API
+
+NIM provides OpenAI-compatible endpoints:
+
+```python
+from openai import OpenAI
+
+client = OpenAI(
+    base_url="https://your-nim-endpoint.telus.ai/v1",
+    api_key="your-api-key"
+)
+
+# Chat completion
+response = client.chat.completions.create(
+    model="llama-2-70b",
+    messages=[
+        {"role": "system", "content": "You are a helpful AI assistant."},
+        {"role": "user", "content": "Explain neural networks."}
+    ],
+    temperature=0.7,
+    max_tokens=500
+)
+
+print(response.choices[0].message.content)
+```
+
+### Direct HTTP API
+
+```bash
+# HTTP request
+curl https://your-nim-endpoint.telus.ai/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer your-api-key" \
+  -d '{
+    "model": "llama-2-70b",
+    "messages": [
+      {"role": "user", "content": "What is AI?"}
+    ],
+    "temperature": 0.7
+  }'
+```
+
+### Python SDK
+
+```python
+import requests
+
+class NIMClient:
+    def __init__(self, endpoint, api_key):
+        self.endpoint = endpoint
+        self.headers = {
+            "Authorization": f"Bearer {api_key}",
+            "Content-Type": "application/json"
+        }
+
+    def generate(self, prompt, model="llama-2-70b"):
+        response = requests.post(
+            f"{self.endpoint}/v1/completions",
+            headers=self.headers,
+            json={
+                "model": model,
+                "prompt": prompt,
+                "max_tokens": 200
+            }
+        )
+        return response.json()["choices"][0]["text"]
+
+    def chat(self, messages, model="llama-2-70b"):
+        response = requests.post(
+            f"{self.endpoint}/v1/chat/completions",
+            headers=self.headers,
+            json={
+                "model": model,
+                "messages": messages
+            }
+        )
+        return response.json()["choices"][0]["message"]["content"]
+
+# Usage
+client = NIMClient(
+    "https://your-nim-endpoint.telus.ai",
+    "your-api-key"
+)
+
+result = client.generate("Explain quantum computing")
+print(result)
+```
+
+### Streaming Responses
+
+```python
+def stream_chat(messages, model="llama-2-70b"):
+    response = client.chat.completions.create(
+        model=model,
+        messages=messages,
+        stream=True
+    )
+
+    for chunk in response:
+        if chunk.choices[0].delta.content:
+            print(chunk.choices[0].delta.content, end='', flush=True)
+
+# Usage
+stream_chat([
+    {"role": "user", "content": "Write a story about AI"}
+])
+```
+
+## Configuration and Optimization
+
+### Model Configuration
+
+```yaml
+# NIM model configuration
+model_name: "llama-2-70b"
+gpu_count: 4
+precision: "fp16"
+max_batch_size: 32
+max_sequence_length: 4096
+tensor_parallel_size: 4
+```
+
+### Performance Tuning
+
+```python
+# Request with performance parameters
+response = client.chat.completions.create(
+    model="llama-2-70b",
+    messages=messages,
+    temperature=0.7,
+    max_tokens=500,
+    top_p=0.95,
+    frequency_penalty=0.0,
+    presence_penalty=0.0,
+    # NIM-specific optimizations
+    extra_body={
+        "use_beam_search": False,
+        "best_of": 1,
+        "early_stopping": True
+    }
+)
+```
+
+### Batching Strategies
+
+```python
+import asyncio
+
+async def batch_inference(prompts):
+    tasks = []
+    for prompt in prompts:
+        task = client.completions.create(
+            model="llama-2-70b",
+            prompt=prompt,
+            max_tokens=100
+        )
+        tasks.append(task)
+
+    results = await asyncio.gather(*tasks)
+    return [r.choices[0].text for r in results]
+
+# Process 100 prompts efficiently
+prompts = [f"Summarize: {text}" for text in documents]
+results = asyncio.run(batch_inference(prompts))
+```
+
+## Advanced Features
+
+### Multi-GPU Deployment
+
+NIM automatically distributes models across GPUs:
+
+```yaml
+# Configuration for 8-GPU deployment
+deployment:
+  gpu_count: 8
+  tensor_parallel: 8  # Model sharding
+  pipeline_parallel: 1
+  strategy: "tensor_parallel"
+```
+
+### Dynamic Batching
+
+Automatically batch requests for efficiency:
+
+```yaml
+dynamic_batching:
+  enabled: true
+  max_batch_size: 32
+  max_queue_delay_microseconds: 100
+  preferred_batch_size: [8, 16, 32]
+```
+
+### Model Ensemble
+
+Combine multiple models:
+
+```python
+# Ensemble configuration
+ensemble_config = {
+    "models": [
+        {"name": "llama-2-7b", "weight": 0.3},
+        {"name": "llama-2-13b", "weight": 0.3},
+        {"name": "llama-2-70b", "weight": 0.4}
+    ],
+    "voting": "weighted"
+}
+```
+
+## Monitoring and Observability
+
+### Health Monitoring
+
+```bash
+# Check endpoint health
+curl https://your-nim-endpoint.telus.ai/health
+
+# Get model status
+curl https://your-nim-endpoint.telus.ai/v1/models
+```
+
+### Performance Metrics
+
+Monitor key metrics:
+- **Throughput**: Requests per second
+- **Latency**: P50, P95, P99 latencies
+- **GPU Utilization**: Per-GPU usage
+- **Memory**: GPU and system memory
+- **Queue Depth**: Request backlog
+
+### Logging
+
+Access detailed logs:
+
+```python
+# Enable verbose logging
+import logging
+
+logging.basicConfig(level=logging.DEBUG)
+
+# Logs include:
+# - Request/response details
+# - Performance metrics
+# - Error traces
+# - Resource usage
+```
+
+### Custom Metrics
+
+Export custom metrics:
+
+```python
+from prometheus_client import Counter, Histogram
+
+request_counter = Counter('nim_requests_total', 'Total requests')
+latency_histogram = Histogram('nim_latency_seconds', 'Request latency')
+
+@latency_histogram.time()
+def make_request(prompt):
+    request_counter.inc()
+    return client.generate(prompt)
+```
+
+## Scaling and High Availability
+
+### Horizontal Scaling
+
+Deploy multiple endpoints:
+
+```yaml
+scaling:
+  min_replicas: 2
+  max_replicas: 10
+  target_gpu_utilization: 70%
+  scale_up_threshold: 80%
+  scale_down_threshold: 30%
+```
+
+### Load Balancing
+
+Distribute requests across instances:
+
+```python
+import random
+
+class LoadBalancedNIM:
+    def __init__(self, endpoints):
+        self.endpoints = endpoints
+
+    def generate(self, prompt):
+        # Round-robin or random selection
+        endpoint = random.choice(self.endpoints)
+        client = NIMClient(endpoint, api_key)
+        return client.generate(prompt)
+
+# Usage
+lb = LoadBalancedNIM([
+    "https://nim-1.telus.ai",
+    "https://nim-2.telus.ai",
+    "https://nim-3.telus.ai"
+])
+
+result = lb.generate("What is machine learning?")
+```
+
+### Failover Strategy
+
+```python
+def resilient_inference(prompt, max_retries=3):
+    for attempt in range(max_retries):
+        try:
+            return client.generate(prompt)
+        except Exception as e:
+            if attempt == max_retries - 1:
+                raise
+            print(f"Retry {attempt + 1} after error: {e}")
+            time.sleep(2 ** attempt)  # Exponential backoff
+```
+
+## Security
+
+### Authentication
+
+```python
+# API key authentication
+headers = {
+    "Authorization": f"Bearer {api_key}",
+    "Content-Type": "application/json"
+}
+
+# Or use OAuth
+from requests_oauthlib import OAuth2Session
+
+oauth = OAuth2Session(client_id)
+token = oauth.fetch_token(token_url, client_secret=client_secret)
+```
+
+### Rate Limiting
+
+```python
+from ratelimit import limits, sleep_and_retry
+
+@sleep_and_retry
+@limits(calls=100, period=60)  # 100 requests per minute
+def make_request(prompt):
+    return client.generate(prompt)
+```
+
+### Input Validation
+
+```python
+def validate_input(prompt, max_length=8000):
+    if len(prompt) > max_length:
+        raise ValueError(f"Prompt too long: {len(prompt)} > {max_length}")
+
+    # Sanitize input
+    prompt = prompt.strip()
+
+    # Check for injection attempts
+    if any(token in prompt for token in ["<script>", "eval(", "exec("]):
+        raise ValueError("Potentially malicious input detected")
+
+    return prompt
+```
+
+## Best Practices
+
+### Endpoint Configuration
+- Use appropriate GPU types for your model
+- Enable tensor parallelism for large models
+- Configure dynamic batching for throughput
+- Set reasonable timeout values
+
+### Request Optimization
+- Batch similar requests when possible
+- Use streaming for long responses
+- Implement caching for frequent queries
+- Set appropriate max_tokens limits
+
+### Error Handling
+- Implement retry logic with exponential backoff
+- Handle rate limits gracefully
+- Log errors for debugging
+- Provide fallback responses
+
+### Cost Management
+- Monitor GPU utilization
+- Use auto-scaling effectively
+- Implement request queuing
+- Consider model quantization
+
+## Troubleshooting
+
+### High Latency
+
+**Symptoms:**
+- Slow response times
+- High P99 latency
+
+**Solutions:**
+- Increase GPU count
+- Enable dynamic batching
+- Reduce max_batch_size
+- Use model quantization
+- Check network connectivity
+
+### Out of Memory
+
+**Symptoms:**
+- CUDA out of memory errors
+- Service crashes
+
+**Solutions:**
+- Reduce max_sequence_length
+- Decrease max_batch_size
+- Use FP16 or INT8 precision
+- Add more GPUs
+- Implement gradient checkpointing
+
+### Low Throughput
+
+**Symptoms:**
+- Low requests/second
+- Underutilized GPUs
+
+**Solutions:**
+- Increase batch size
+- Enable dynamic batching
+- Optimize preprocessing
+- Check for CPU bottlenecks
+- Use multiple workers
+
+## Integration Examples
+
+### FastAPI Application
+
+```python
+from fastapi import FastAPI, HTTPException
+from pydantic import BaseModel
+
+app = FastAPI()
+
+class GenerateRequest(BaseModel):
+    prompt: str
+    max_tokens: int = 100
+
+@app.post("/generate")
+async def generate(request: GenerateRequest):
+    try:
+        result = client.generate(
+            request.prompt,
+            max_tokens=request.max_tokens
+        )
+        return {"response": result}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+# Run with: uvicorn app:app --host 0.0.0.0 --port 8000
+```
+
+### LangChain Integration
+
+```python
+from langchain.llms.base import LLM
+from typing import Optional, List
+
+class NIMLLM(LLM):
+    endpoint: str
+    api_key: str
+    model: str = "llama-2-70b"
+
+    def _call(self, prompt: str, stop: Optional[List[str]] = None) -> str:
+        client = NIMClient(self.endpoint, self.api_key)
+        return client.generate(prompt, model=self.model)
+
+    @property
+    def _llm_type(self) -> str:
+        return "nim"
+
+# Usage
+llm = NIMLLM(
+    endpoint="https://your-nim-endpoint.telus.ai",
+    api_key="your-api-key"
+)
+
+from langchain.chains import LLMChain
+from langchain.prompts import PromptTemplate
+
+prompt = PromptTemplate(
+    input_variables=["question"],
+    template="Answer this question: {question}"
+)
+
+chain = LLMChain(llm=llm, prompt=prompt)
+response = chain.run("What is deep learning?")
+```
+
+### Microservice Deployment
+
+```python
+# Kubernetes deployment for NIM client service
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nim-client-service
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nim-client
+  template:
+    metadata:
+      labels:
+        app: nim-client
+    spec:
+      containers:
+      - name: nim-client
+        image: your-registry/nim-client:latest
+        env:
+        - name: NIM_ENDPOINT
+          value: "https://your-nim-endpoint.telus.ai"
+        - name: NIM_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: nim-credentials
+              key: api-key
+```
+
+## Viewing All Endpoints
+
+Click "View All" to access your NIM dashboard:
+- List of all NIM endpoints
+- Model information
+- Resource utilization
+- Performance metrics
+- Health status
+- API documentation
+- Quick actions (restart, scale, configure)
+
+## Migrating to NIM
+
+### From Other Inference Solutions
+
+Benefits of NIM:
+- **Performance**: NVIDIA optimizations
+- **Scalability**: Enterprise-grade serving
+- **Reliability**: Production-ready
+- **Support**: NVIDIA support
+
+Migration steps:
+1. Assess current infrastructure
+2. Convert models to compatible format
+3. Deploy NIM endpoint
+4. Test performance
+5. Gradually migrate traffic
+6. Monitor and optimize
+
+### From Cloud Providers
+
+NIM advantages:
+- Lower costs at scale
+- Data sovereignty
+- Customization options
+- Direct NVIDIA support
+- Latest optimizations
+
+## Comparison with Other Services
+
+| Feature | NIM | vLLM | Ollama |
+|---------|-----|------|--------|
+| **Performance** | Excellent | Excellent | Good |
+| **GPU Optimization** | Best | Very Good | Good |
+| **Enterprise Features** | Extensive | Moderate | Basic |
+| **Ease of Use** | Moderate | Moderate | Easy |
+| **Best For** | Production | Production | Development |
+| **Model Support** | NVIDIA-optimized | Wide range | Popular models |
+| **Cost** | Premium | Moderate | Low |
+
+Choose NIM when:
+- Maximum GPU performance needed
+- Enterprise features required
+- Using NVIDIA infrastructure
+- Need production support

@@ -1,0 +1,537 @@
+---
+title: vLLM Inference Services
+description: High-throughput, optimized serving for large language models
+---
+
+# vLLM Inference Services
+
+Inference Endpoint Profiles are predefined configurations designed to simplify and accelerate the deployment of machine learning models as APIs. These profiles provide a structured and standardized approach to serving trained models, enabling rapid prototyping and real-time predictions.
+
+vLLM is specifically optimized for serving Large Language Models (LLMs) with high throughput and low latency.
+
+## Overview
+
+vLLM (very Large Language Model) is a fast and easy-to-use library for LLM inference and serving. It's designed to:
+
+- Maximize throughput for batch requests
+- Minimize latency for individual requests
+- Efficiently utilize GPU memory
+- Support popular LLM architectures
+- Provide OpenAI-compatible API
+
+## Key Features
+
+### High Performance
+- **PagedAttention**: Efficient memory management
+- **Continuous Batching**: Dynamic request batching
+- **Optimized CUDA Kernels**: Fast GPU execution
+- **Quantization Support**: Reduced memory footprint
+
+### Model Support
+Compatible with popular models:
+- **GPT**: GPT-2, GPT-3, GPT-J, GPT-NeoX
+- **LLaMA**: LLaMA, LLaMA-2, Vicuna, Alpaca
+- **Mistral**: Mistral-7B and variants
+- **MPT**: MosaicML's MPT models
+- **Falcon**: Technology Innovation Institute models
+- And many more via Hugging Face
+
+### Easy Integration
+- OpenAI-compatible API endpoints
+- RESTful HTTP interface
+- Streaming responses
+- Simple client libraries
+
+### Flexible Deployment
+- CPU and GPU support
+- Multi-GPU configurations
+- Tensor parallelism
+- Pipeline parallelism
+
+## Use Cases
+
+### Conversational AI
+Build chatbots and assistants:
+- Customer service bots
+- Virtual assistants
+- Interactive agents
+- Q&A systems
+
+### Content Generation
+Generate text at scale:
+- Article writing
+- Code generation
+- Creative writing
+- Translation services
+
+### Text Analysis
+Process and understand text:
+- Sentiment analysis
+- Text classification
+- Named entity recognition
+- Summarization
+
+### API Services
+Serve LLMs as microservices:
+- RESTful endpoints
+- Batch processing
+- Real-time inference
+- Multi-tenant serving
+
+## Creating a vLLM Inference Endpoint
+
+1. **Navigate** to vLLM Inference Services
+2. **Click** "New Inference Endpoint" button
+3. **Select** model configuration:
+   - Choose base model (e.g., LLaMA-2, Mistral)
+   - Or specify custom model from Hugging Face
+4. **Configure** resources:
+   - GPU type and count
+   - Memory allocation
+   - Tensor parallelism degree
+5. **Set** inference parameters:
+   - Max sequence length
+   - Max batch size
+   - Quantization options
+6. **Review** and deploy
+
+## Inference Endpoint Profiles
+
+### Small Model Profile
+- **Model Size**: Up to 7B parameters
+- **GPU**: 1x NVIDIA A100 (40GB)
+- **Throughput**: ~100 requests/sec
+- **Best for**: Development, testing, small-scale production
+
+### Medium Model Profile
+- **Model Size**: 13B-30B parameters
+- **GPU**: 2x NVIDIA A100 (80GB)
+- **Throughput**: ~50 requests/sec
+- **Best for**: Production workloads, moderate traffic
+
+### Large Model Profile
+- **Model Size**: 70B+ parameters
+- **GPU**: 4x NVIDIA A100 (80GB)
+- **Throughput**: ~20 requests/sec
+- **Best for**: High-quality generation, research
+
+### Custom Profile
+Configure exactly what you need:
+- Choose specific model
+- Set GPU configuration
+- Define performance parameters
+- Custom optimizations
+
+## Using vLLM API
+
+### OpenAI-Compatible Endpoint
+
+vLLM provides an OpenAI-compatible API, making migration easy:
+
+```python
+from openai import OpenAI
+
+# Point to your vLLM endpoint
+client = OpenAI(
+    base_url="https://your-vllm-endpoint.telus.ai/v1",
+    api_key="your-api-key"
+)
+
+# Chat completion
+response = client.chat.completions.create(
+    model="your-model-name",
+    messages=[
+        {"role": "system", "content": "You are a helpful assistant."},
+        {"role": "user", "content": "Explain quantum computing in simple terms."}
+    ],
+    temperature=0.7,
+    max_tokens=200
+)
+
+print(response.choices[0].message.content)
+```
+
+### Text Completion
+
+```python
+# Text completion
+response = client.completions.create(
+    model="your-model-name",
+    prompt="Once upon a time",
+    max_tokens=100,
+    temperature=0.8
+)
+
+print(response.choices[0].text)
+```
+
+### Streaming Responses
+
+```python
+# Stream responses for real-time output
+stream = client.chat.completions.create(
+    model="your-model-name",
+    messages=[
+        {"role": "user", "content": "Write a short story about a robot."}
+    ],
+    stream=True
+)
+
+for chunk in stream:
+    if chunk.choices[0].delta.content:
+        print(chunk.choices[0].delta.content, end='')
+```
+
+### Direct HTTP Requests
+
+```bash
+# Using curl
+curl https://your-vllm-endpoint.telus.ai/v1/completions \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer your-api-key" \
+  -d '{
+    "model": "your-model-name",
+    "prompt": "Explain machine learning",
+    "max_tokens": 100,
+    "temperature": 0.7
+  }'
+```
+
+## Configuration Parameters
+
+### Model Parameters
+
+```yaml
+# Example configuration
+model_name: "meta-llama/Llama-2-7b-chat-hf"
+tensor_parallel_size: 1
+gpu_memory_utilization: 0.9
+max_model_len: 4096
+```
+
+### Inference Parameters
+
+Common parameters for requests:
+
+- **temperature**: Control randomness (0.0-2.0)
+  - Lower = more deterministic
+  - Higher = more creative
+
+- **max_tokens**: Maximum tokens to generate
+
+- **top_p**: Nucleus sampling threshold
+
+- **top_k**: Top-k sampling parameter
+
+- **frequency_penalty**: Reduce repetition
+
+- **presence_penalty**: Encourage topic diversity
+
+- **stop**: Stop sequences to end generation
+
+### Example with All Parameters
+
+```python
+response = client.chat.completions.create(
+    model="your-model-name",
+    messages=[
+        {"role": "user", "content": "Write a poem about AI"}
+    ],
+    temperature=0.8,
+    max_tokens=150,
+    top_p=0.95,
+    frequency_penalty=0.5,
+    presence_penalty=0.3,
+    stop=["\n\n", "---"]
+)
+```
+
+## Performance Optimization
+
+### Batching Requests
+
+vLLM automatically batches requests for efficiency:
+
+```python
+# Multiple requests are batched automatically
+import asyncio
+
+async def generate_batch():
+    tasks = [
+        client.completions.create(
+            model="your-model",
+            prompt=f"Story {i}"
+        )
+        for i in range(10)
+    ]
+    return await asyncio.gather(*tasks)
+```
+
+### Quantization
+
+Reduce memory usage with quantization:
+
+- **FP16**: Half precision (default)
+- **INT8**: 8-bit quantization
+- **INT4**: 4-bit quantization (experimental)
+
+```yaml
+# Enable quantization
+quantization: "awq"  # or "gptq", "squeezellm"
+```
+
+### Tensor Parallelism
+
+Distribute model across multiple GPUs:
+
+```yaml
+# Use 4 GPUs in parallel
+tensor_parallel_size: 4
+```
+
+### Memory Optimization
+
+```yaml
+# Configure memory usage
+gpu_memory_utilization: 0.9  # Use 90% of GPU memory
+max_num_batched_tokens: 2048
+max_num_seqs: 256
+```
+
+## Monitoring and Management
+
+### Endpoint Metrics
+
+Monitor your vLLM endpoint:
+- **Requests per second**
+- **Average latency**
+- **Token throughput**
+- **GPU utilization**
+- **Memory usage**
+- **Queue depth**
+
+### Health Checks
+
+```bash
+# Check endpoint health
+curl https://your-vllm-endpoint.telus.ai/health
+
+# Get model information
+curl https://your-vllm-endpoint.telus.ai/v1/models
+```
+
+### Logging
+
+View detailed logs:
+- Request/response logs
+- Error logs
+- Performance metrics
+- Usage analytics
+
+## Scaling Strategies
+
+### Vertical Scaling
+- Increase GPU memory
+- Use more powerful GPUs
+- Enable quantization
+
+### Horizontal Scaling
+- Deploy multiple endpoints
+- Load balancing
+- Auto-scaling based on traffic
+
+### Model Optimization
+- Fine-tune for your use case
+- Prune unnecessary layers
+- Distill to smaller models
+
+## Best Practices
+
+### Endpoint Configuration
+- Start with appropriate model size
+- Monitor and adjust GPU allocation
+- Enable quantization for large models
+- Use tensor parallelism for 70B+ models
+
+### Request Handling
+- Implement retry logic
+- Handle rate limits gracefully
+- Use streaming for long outputs
+- Cache frequent queries
+
+### Cost Optimization
+- Right-size your instances
+- Use auto-scaling
+- Implement request queuing
+- Monitor usage patterns
+
+### Security
+- Use API key authentication
+- Implement rate limiting
+- Validate input length
+- Sanitize outputs
+
+## Troubleshooting
+
+### Out of Memory
+**Solutions:**
+- Reduce max_model_len
+- Enable quantization
+- Increase GPU memory
+- Reduce max_num_batched_tokens
+
+### High Latency
+**Solutions:**
+- Check batch size
+- Monitor GPU utilization
+- Reduce max_tokens
+- Scale horizontally
+
+### Model Loading Errors
+**Solutions:**
+- Verify model name
+- Check GPU memory
+- Validate model format
+- Review error logs
+
+## Integration Examples
+
+### Python Application
+
+```python
+import os
+from openai import OpenAI
+
+class LLMService:
+    def __init__(self):
+        self.client = OpenAI(
+            base_url=os.getenv("VLLM_ENDPOINT"),
+            api_key=os.getenv("VLLM_API_KEY")
+        )
+
+    def generate(self, prompt, max_tokens=100):
+        response = self.client.completions.create(
+            model="your-model",
+            prompt=prompt,
+            max_tokens=max_tokens
+        )
+        return response.choices[0].text
+
+    def chat(self, messages):
+        response = self.client.chat.completions.create(
+            model="your-model",
+            messages=messages
+        )
+        return response.choices[0].message.content
+
+# Usage
+llm = LLMService()
+result = llm.generate("Explain AI")
+print(result)
+```
+
+### Web API Integration
+
+```javascript
+// JavaScript/Node.js example
+const OpenAI = require('openai');
+
+const client = new OpenAI({
+  baseURL: process.env.VLLM_ENDPOINT,
+  apiKey: process.env.VLLM_API_KEY
+});
+
+async function generate(prompt) {
+  const response = await client.completions.create({
+    model: 'your-model',
+    prompt: prompt,
+    max_tokens: 100
+  });
+
+  return response.choices[0].text;
+}
+
+// Usage
+generate('Explain machine learning')
+  .then(result => console.log(result));
+```
+
+### Batch Processing
+
+```python
+# Process multiple inputs efficiently
+import asyncio
+from openai import AsyncOpenAI
+
+client = AsyncOpenAI(
+    base_url="your-endpoint",
+    api_key="your-key"
+)
+
+async def process_batch(prompts):
+    tasks = [
+        client.completions.create(
+            model="your-model",
+            prompt=p,
+            max_tokens=100
+        )
+        for p in prompts
+    ]
+    results = await asyncio.gather(*tasks)
+    return [r.choices[0].text for r in results]
+
+# Usage
+prompts = ["Prompt 1", "Prompt 2", "Prompt 3"]
+results = asyncio.run(process_batch(prompts))
+```
+
+## Viewing All Endpoints
+
+Click "View All" to see:
+- List of all vLLM endpoints
+- Endpoint status and health
+- Model information
+- Resource utilization
+- API endpoint URLs
+- Quick actions (restart, configure, delete)
+
+## Migration from Other Services
+
+### From OpenAI
+Benefits of migrating:
+- Lower costs
+- Data privacy
+- Custom models
+- No rate limits
+
+Migration is easy due to API compatibility - just change the base URL!
+
+### From Custom Inference
+Benefits:
+- Managed infrastructure
+- Optimized performance
+- Automatic scaling
+- Built-in monitoring
+
+## Advanced Features
+
+### Custom Models
+Deploy your fine-tuned models:
+1. Upload to model registry
+2. Configure vLLM endpoint
+3. Specify model path
+4. Deploy and test
+
+### Multi-Model Serving
+Serve multiple models from one endpoint:
+- A/B testing
+- Model versioning
+- Fallback models
+- Specialized models
+
+### Custom Preprocessing
+Add custom logic:
+- Input validation
+- Prompt engineering
+- Output formatting
+- Custom routing
